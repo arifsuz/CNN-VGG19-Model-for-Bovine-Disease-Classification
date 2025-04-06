@@ -1,0 +1,68 @@
+🔍 1. Grafik Akurasi dan Loss
+📈 Accuracy Plot:
+Train Accuracy: Meningkat cepat sejak awal dan stabil di atas 97% setelah beberapa epoch.
+
+Validation Accuracy: Mengikuti pola yang mirip, stabil di atas 96% dari epoch ke-4 ke atas.
+
+🔍 Insight:
+
+Model berhasil belajar dengan baik tanpa tanda-tanda overfitting besar.
+
+Tidak ada gap signifikan antara akurasi training dan validasi.
+
+📉 Loss Plot:
+Train Loss: Menurun konsisten hingga di bawah 0.05.
+
+Validation Loss: Fluktuatif tapi tetap rendah (sekitar 0.1–0.2).
+
+🔍 Insight:
+
+Loss rendah artinya model mampu memprediksi probabilitas dengan baik.
+
+Fluktuasi kecil pada val loss wajar mengingat jumlah data validasi yang relatif lebih sedikit.
+
+_____________________________________________________________________________________
+🧩 2. Confusion Matrix
+True \ Predicted	Kuku	Mata	Sehat
+Sakit PMK Kuku (4 gambar)	3	1	0
+Sakit PMK Mata (26 gambar)	0	25	1
+Sehat (69 gambar)	0	2	67
+🔍 Insight:
+
+Kelas sapi sehat paling dominan, model mengenalinya dengan baik.
+
+Hanya 1 gambar PMK Kuku salah diklasifikasi sebagai PMK Mata, dan 2 gambar Sehat salah diklasifikasi sebagai Mata.
+
+Kelas "sakit pmk kuku" hanya memiliki 4 data → ini terlalu sedikit untuk training dan evaluasi yang kuat.
+
+_____________________________________________________________________________________
+📊 3. Classification Report
+Kelas	Precision	Recall	F1-score	Support
+sapi_sakit_pmk_kuku	1.00	0.75	0.86	4
+sapi_sakit_pmk_mata	0.89	0.96	0.93	26
+sapi_sehat	0.99	0.97	0.98	69
+
+📌 Akurasi Total: 96%
+
+🔍 Analisis Tambahan:
+Precision tinggi (1.00) pada "PMK Kuku" berarti semua prediksi model untuk kelas ini benar, tapi recall hanya 0.75 → masih ada kasus PMK Kuku yang tidak dikenali (false negative).
+
+F1-score tertinggi dimiliki kelas sapi sehat (0.98) dan PMK Mata (0.93), artinya model lebih stabil mengenali kedua kelas tersebut.
+
+Macro Average F1: 0.92 → cukup tinggi, mencerminkan keseimbangan antar kelas meski distribusi tidak merata.
+
+_____________________________________________________________________________________
+✅ Kesimpulan & Rekomendasi
+💡 Kesimpulan:
+Model sudah sangat bagus: akurasi tinggi, overfitting minim, dan performa prediksi sangat baik terutama pada kelas dominan.
+
+Namun, kelas PMK Kuku perlu lebih banyak data untuk meningkatkan recall.
+
+🔧 Rekomendasi:
+Tambah data untuk kelas PMK Kuku (idealnya 30–50 gambar minimal).
+
+Gunakan class weight atau oversampling untuk membantu model belajar lebih seimbang.
+
+Pertimbangkan augmentasi khusus untuk kelas minoritas saat training.
+
+Jika ingin inference realtime, bisa konversi ke .tflite atau integrasi ke website dengan Flask/Streamlit.
